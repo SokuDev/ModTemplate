@@ -30,7 +30,7 @@ Note that if you want to build in Release, you should replace `-DCMAKE_BUILD_TYP
 
 ## Compiling
 Now, to build the mod, go to the build directory (if you did the previous step you already are)
-`cd C:\Users\PinkySmile\SokuProjects\ModTemplate\build` and invoke the compiler by running `nmake`.
+`cd C:\Users\PinkySmile\SokuProjects\ModTemplate\build` and invoke the compiler by running `cmake --build . --target ModTemplate`. If you change the name of the mod (in the add_library statement in CMakeLists.txt), you will need to replace 'ModTemplate' by the name of your mod in the previous command.
 
 You should find the resulting ModTemplate.dll mod inside the build folder that can be to SWRSToys.ini.
 In my case, I would add this line to it `ModTemplate=C:/Users/PinkySmile/SokuProjects/ModTemplate/build/ModTemplate.dll`.
