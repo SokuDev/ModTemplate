@@ -26,7 +26,7 @@ mkdir build
 cd build
 cmake .. -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Debug
 ```
-Note that if you want to build in Release, you should replace `-DCMAKE_BUILD_TYPE=Debug` with `-DCMAKE_BUILD_TYPE=Release`.
+Note that if you want to build in Release, you should replace `-DCMAKE_BUILD_TYPE=Debug` with `-DCMAKE_BUILD_TYPE=Release`. It is also recommended to add the `-DFORCE_PDB=ON` argument to generate a pdb file for the release, which makes it easiler to analyze dump files.
 
 ## Compiling
 Now, to build the mod, go to the build directory (if you did the previous step you already are)
