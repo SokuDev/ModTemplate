@@ -1,0 +1,26 @@
+name: build
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    types: [opened]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        config: ["Release", "Debug"]
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
+        with:
+          arch: amd64_x86
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.config }}
+          cmake --build .
