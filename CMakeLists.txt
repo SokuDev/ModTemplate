@@ -38,3 +38,10 @@ target_link_libraries(
         d3d9
         d3dx9
 )
+
+# binary
+install(TARGETS "${PROJECT_NAME}" DESTINATION .)
+# PDB file
+install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION . OPTIONAL)
+# license and other common files
+install(FILES LICENSE DESTINATION .)
