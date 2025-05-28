@@ -1,0 +1,41 @@
+name: build
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    types: [opened]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        config: ["Release", "Debug"]
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756
+        with:
+          arch: amd64_x86
+      - name: build
+        shell: bash
+        run: |
+          mkdir build upload
+          touch upload/.a-workaround-to-avoid-being-flattened
+          cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.config }}
+          project_name=$(grep '^CMAKE_PROJECT_NAME:STATIC=' CMakeCache.txt | cut -d = -f 2-)
+          config=${{ matrix.config }}
+          echo "ARTIFACT_NAME=${project_name}_${config,,}" >> ${GITHUB_ENV}
+          echo "PROJECT_NAME=${project_name}" >> ${GITHUB_ENV}
+          cmake --build .
+          cmake --install . --prefix "../artifact/${project_name}"
+      - name: Upload the ${{ matrix.config }} binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: |
+            artifact/${{ env.PROJECT_NAME }}
+            artifact/.a-workaround-to-avoid-being-flattened
+            !artifact/.a-workaround-to-avoid-being-flattened
